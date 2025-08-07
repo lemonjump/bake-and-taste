@@ -14,7 +14,215 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bakeries: {
+        Row: {
+          address: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          phone: string | null
+          seller_id: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          phone?: string | null
+          seller_id: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          phone?: string | null
+          seller_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bakeries_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cakes: {
+        Row: {
+          allergens: string[] | null
+          available: boolean | null
+          bakery_id: string
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          preparation_time_hours: number | null
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          allergens?: string[] | null
+          available?: boolean | null
+          bakery_id: string
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          preparation_time_hours?: number | null
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          allergens?: string[] | null
+          available?: boolean | null
+          bakery_id?: string
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          preparation_time_hours?: number | null
+          price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cakes_bakery_id_fkey"
+            columns: ["bakery_id"]
+            isOneToOne: false
+            referencedRelation: "bakeries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          bakery_id: string
+          cake_id: string
+          created_at: string
+          customer_id: string
+          delivery_address: string | null
+          delivery_type: string
+          id: string
+          payment_status: string
+          preferred_delivery_time: string | null
+          quantity: number
+          special_instructions: string | null
+          status: string
+          stripe_session_id: string | null
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          bakery_id: string
+          cake_id: string
+          created_at?: string
+          customer_id: string
+          delivery_address?: string | null
+          delivery_type: string
+          id?: string
+          payment_status?: string
+          preferred_delivery_time?: string | null
+          quantity?: number
+          special_instructions?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          total_amount: number
+          updated_at?: string
+        }
+        Update: {
+          bakery_id?: string
+          cake_id?: string
+          created_at?: string
+          customer_id?: string
+          delivery_address?: string | null
+          delivery_type?: string
+          id?: string
+          payment_status?: string
+          preferred_delivery_time?: string | null
+          quantity?: number
+          special_instructions?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_bakery_id_fkey"
+            columns: ["bakery_id"]
+            isOneToOne: false
+            referencedRelation: "bakeries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_cake_id_fkey"
+            columns: ["cake_id"]
+            isOneToOne: false
+            referencedRelation: "cakes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +231,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "customer" | "seller"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +358,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["customer", "seller"],
+    },
   },
 } as const
